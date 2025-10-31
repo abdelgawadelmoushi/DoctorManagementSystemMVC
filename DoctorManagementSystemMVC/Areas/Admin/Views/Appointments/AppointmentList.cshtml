@@ -1,0 +1,106 @@
+﻿@model IEnumerable<DoctorManagementSystemMVC.Models.Doctor>
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+</head>
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Doctors & Their Appointments</h1>
+
+    @foreach (var doctor in Model)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">@doctor.Name (@doctor.Specialization)</h4>
+            </div>
+
+            <div class="card-body bg-light">
+                @if (doctor.Appointments != null && doctor.Appointments.Any())
+                {
+                    <table class="table table-striped table-bordered align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in doctor.Appointments)
+                            {
+                                <tr>
+                                    <td>@appointment.Name</td>
+                                    <td>@appointment.Date.ToShortDateString()</td>
+                                    <td>@appointment.Time</td>
+                                    <td>
+                                        <a asp-area="Admin"
+                                           asp-controller="Appointments"
+                                           asp-action="Edit"
+                                           asp-route-id="@appointment.Id"
+                                           asp-route-doctorId="@doctor.Id"
+                                           class="btn btn-sm btn-warning">
+                                            Edit
+                                        </a>
+                                        <a asp-area="Admin"
+                                           asp-controller="Appointments"
+                                           asp-action="Delete"
+                                           asp-route-id="@appointment.Id"
+                                           class="btn btn-sm btn-danger btn-delete">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No appointments booked yet.</p>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+    
+        
+        
+        </script>
+
+ 
+@* <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll(".btn-delete");
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = this.getAttribute("href")
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+    });
+            });
+        });
+    </script> *@

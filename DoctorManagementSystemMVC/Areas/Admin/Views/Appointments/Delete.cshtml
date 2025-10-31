@@ -1,0 +1,26 @@
+﻿@model DoctorManagementSystemMVC.Models.Appointment
+
+<form asp-for="Delete" method="post">
+    <div class="mb-3">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="DoctorId" value="@ViewBag.DoctorId" />
+
+        <label asp-for="Name" class="form-label">Patient Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Enter patient name" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+        <label asp-for="Date" class="form-label">Appointment Date</label>
+        <input asp-for="Date" type="date" class="form-control" required />
+        <span asp-validation-for="Date" class="text-danger"></span>
+
+        <label asp-for="Time" class="form-label">Appointment Time</label>
+        <input asp-for="Time" type="time" class="form-control" required />
+        <span asp-validation-for="Time" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Delete Appointment</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

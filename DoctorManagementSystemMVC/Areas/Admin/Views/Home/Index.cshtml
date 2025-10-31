@@ -1,0 +1,225 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using DoctorManagementSystemMVC.Models
+@model List<Doctor>
+@{
+    ViewData["Title"] = "Welcome to Our Hospital";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Index - adminManagementSystem Bootstrap Template</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https:/fonts.googleapis.com" rel="preconnect">
+    <link href="https:/fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https:/fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="~/css/Admin/main.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: adminManagementSystem
+    * Template URL: https:/bootstrapmade.com/adminMangementSystem-bootstrap-hospital-template/
+    * Updated: Aug 11 2025 with Bootstrap v5.3.7
+    * Author: BootstrapMade.com
+    * License: https:/bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+
+
+<body class="index-page">
+    
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+
+            <a href="admin/home/index" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="~/assets/img/logo.webp" alt=""> -->
+                <h1 class="sitename">Medi<span>Nest</span></h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="admin/Home/index" class="active">Home</a></li>
+                    <li><a href="admin/Doctor/departments">Departments</a></li>
+                    <li><a href="admin/Doctor/admins">admins</a></li>
+                    <li class="dropdown">
+                        <a href="admin/home/#"><span>Appointment Management</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="/admin/Doctor/ReservationsManagement">Reservations Management</a></li>
+                            <li><a href="/admin/Doctor/DoctorsPage">Book Appointment</a></li>
+                            <li><a href="/admin/Appointments/AppointmentList">Appointment List</a></li>
+                            <li><a asp-for="/admin/Doctor/CompleteAppointment">Complete Appointment</a></li>
+                            <li><a href="/admin/home/privacy">Privacy</a></li>
+                            <li><a href="/admin/home/404">404</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#"><span>Booked Appointments</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            @foreach (var doctor in Model)
+                            {
+                                @if (doctor.Appointments != null && doctor.Appointments.Any())
+                                {
+                                    <li class="dropdown">
+                                        <a href="#">Dr. @doctor.Name (@doctor.Specialization) <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                        <ul>
+                                            @foreach (var app in doctor.Appointments)
+                                            {
+                                                <li>
+                                                    <a href="#">
+                                                        @app.Name - @app.Date.ToShortDateString() @app.Time.ToString(@"hh\:mm")
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a class="btn-getstarted" href="apointment">Apointment</a>
+
+        </div>
+    </header>
+    <div class="background-elements">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-pattern"></div>
+    </div>
+
+
+    <!-- Find A admin Section -->
+    <!-- Section Title -->
+    
+                <h2>Find A Doctor</h2>
+    <div class="text-center">
+        <h1 class="display-4">Welcome to Our Hospital</h1>
+        <p>Thank you for choosing our hospital for your healthcare needs.</p>
+        <p>Here, we strive to provide the highest quality medical care to our patients.</p>
+        <p>Learn more about our services and specialties:</p>
+        <ul class="list-group">
+            <li class="list-group-item">Internal Medicine</li>
+            <li class="list-group-item">Pediatrics</li>
+            <li class="list-group-item">Surgery</li>
+        </ul>
+        <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
+    </div>        <!-- End Section Title -->
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">  </div>
+
+            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-10">
+                    <div class="search-header">
+                        <h2>Discover Your Ideal Medical Specialist</h2>
+                        <p>Connect with our network of certified healthcare professionals across all medical disciplines</p>
+                    </div>
+
+            <div class="specialists-showcase" data-aos="fade-up" data-aos-delay="300">
+                <div class="specialist-card featured" data-aos="slide-up" data-aos-delay="100">
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-4">
+
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="~/Images/@item.Img" class="card-img-top" alt="..." height="140PX">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@item.Name</h5>
+                                            <p class="card-text">@item.Specialization</p>
+                                            <a asp-area="Admin"
+                                               asp-controller="Appointments"
+                                               asp-action="CompleteAppointment"
+                                               asp-route-DoctorId="@item.Id"
+                                               class="btn btn-primary">
+                                                Book Appointment
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                        </div>
+
+                    </div>
+
+    <!-- /Call To Action Section -->
+
+
+
+    <footer id="footer" class="footer position-relative">
+
+        <div class="container footer-top">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6 footer-about">
+                    <a href="admin/home/index" class="logo d-flex align-items-center">
+                        <span class="sitename">admin Management System</span>
+                    </a>
+
+                </div>
+
+                <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="admin/home/#">Home</a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="admin/home/#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <script src="~/assets/vendor/aos/aos.js"></script>
+    <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="~/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="~/js/Admin/main.js"></script>
+}
+</body>
+
+</html>

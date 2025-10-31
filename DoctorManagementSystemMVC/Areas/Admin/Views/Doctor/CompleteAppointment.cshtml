@@ -1,0 +1,59 @@
+﻿@model DoctorManagementSystemMVC.Models.Appointment
+
+@{
+    ViewData["Title"] = "Book Appointment";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Book Appointment</h2>
+
+    <form asp-area="Admin" asp-controller="Doctor" asp-action="CompleteAppointment" method="post">
+        <div class="mb-3">
+            <label   class="form-label">Patient Name</label>
+            <input name="Name" class="form-control" placeholder="Enter patient name" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Time" class="form-label">Time</label>
+            <input asp-for="Time" name="Time" type="time" class="form-control" id="timeInput" required />
+        </div>
+        <div class="mb-3">
+            <label   class="form-label">Date</label>
+            <input  name="Date" type="date" class="form-control" required />
+        </div>
+
+      
+
+        <input type="hidden" asp-for="Id" value="@ViewBag.Id" />
+
+        <input type="hidden" asp-for="DoctorId" value="@ViewBag.DoctorId" name="DoctorId" />
+
+        <button type="submit" class="btn btn-primary w-100" asp-route="@ViewBag.Doctor" asp-route="@ViewBag.Id" asp-route="@ViewBag.DoctorId">Confirm Appointment</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const dateInput = document.getElementById("dateInput");
+        const timeInput = document.getElementById("timeInput");
+
+        dateInput.addEventListener("input", function () {
+            const selectedDate = new Date(this.value);
+            const day = selectedDate.getUTCDay();
+
+            if (day === 5 || day === 6) {
+                alert("Sorry, appointments are not available on Friday or Saturday.");
+                this.value = "";
+            }
+        });
+
+
+        timeInput.addEventListener("input", function () {
+            const time = this.value;
+            if (time < "08:00" || time > "17:00") {
+                alert("Working hours are from 8:00 AM to 5:00 PM only.");
+                this.value = "";
+            }
+        });
+    </script>
+}
