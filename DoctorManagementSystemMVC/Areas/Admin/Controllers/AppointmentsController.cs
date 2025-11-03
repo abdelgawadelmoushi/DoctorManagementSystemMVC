@@ -78,21 +78,6 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         }
 
 
-        //[HttpGet]
-        //public IActionResult Delete(int id, int doctorId)
-        //{
-        //          return View();
-        //}
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Delete(Appointment appointment)
-        //{
-        //    _context.appointments.Remove(appointment);
-        //    _context.SaveChanges();
-        //    return RedirectToAction("AppointmentList");
-        //}
 
 
 

@@ -17,17 +17,6 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
 
 
 
-        //[HttpGet]
-        //public IActionResult ReservationsManager()
-        //{
-        //    var reservations = _context.appointments
-        //        .Include(a => a.doctor)
-        //        .OrderBy(a => a.Date)
-        //        .ThenBy(a => a.Time)
-        //        .ToList();
-
-        //    return View(reservations);
-        //}
 
         [HttpGet]
         public IActionResult DoctorsPage(int? spcId ,string DocName , int Page=1)
@@ -69,15 +58,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit([FromRoute] int id, int doctorId)
         {
-            //var appointment = _context.appointments.Find(id);
-
-            //if (appointment == null)
-            //{
-            //    return NotFound("Appointment not found");
-            //}
-
-            //ViewBag.DoctorId = doctorId;
-            //ViewBag.Id = appointment.Id;
+         
             var appointment = _context.appointments.FirstOrDefault(e => e.Id == id && e.DoctorId == doctorId);
 
             return View(appointment);
@@ -94,11 +75,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         }
 
 
-        //public IActionResult BookAppointment()
-        //{
-
-        //    return RedirectToAction("DoctorsPage");
-        //}
+ 
 
         [HttpGet]
         public IActionResult CompleteAppointment(int DoctorId)
