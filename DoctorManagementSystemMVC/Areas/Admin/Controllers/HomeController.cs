@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
 {
-    [Area ("Admin")]
+    [Area("Admin")]
     public class HomeController : Controller
     {
         ApplicationDbContext _context = new();

@@ -19,7 +19,6 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         public IActionResult ReservationsManager()
         {
             var reservations = _context.appointments
-                .Include(a => a.doctor)
                 .OrderBy(a => a.Date)
                 .ThenBy(a => a.Time)
                 .ToList();
@@ -27,7 +26,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
             return View(reservations);
         }
 
-     
+
 
         public IActionResult BookAppointment()
         {
@@ -49,7 +48,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
 
         public IActionResult SuccseededAppointement()
         {
-            return RedirectToAction("AppointmentList");
+            return RedirectToAction("AppointmentList", "Doctor");
 
         }
         [HttpGet]
@@ -73,9 +72,9 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Appointment appointment)
         {
-                       _context.appointments.Update(appointment);
-             _context.SaveChanges();
-            return RedirectToAction("AppointmentList");
+            _context.appointments.Update(appointment);
+            _context.SaveChanges();
+            return RedirectToAction("AppointmentList","Doctor");
         }
 
 
@@ -96,13 +95,13 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         //}
 
 
-   
+
         public IActionResult Delete(int id)
         {
-            var appointment  = _context.appointments.FirstOrDefault(x => x.Id == id);
+            var appointment = _context.appointments.FirstOrDefault(x => x.Id == id);
             _context.appointments.Remove(appointment);
             _context.SaveChanges();
-            return RedirectToAction("AppointmentList");
+            return RedirectToAction("AppointmentList", "Doctor");
         }
     }
 }

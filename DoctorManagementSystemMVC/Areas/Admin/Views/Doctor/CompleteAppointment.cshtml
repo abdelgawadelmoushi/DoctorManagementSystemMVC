@@ -1,11 +1,11 @@
 ﻿@model DoctorManagementSystemMVC.Models.Appointment
 
-@{
+﻿@{
     ViewData["Title"] = "Book Appointment";
 }
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Book Appointment</h2>
+    <h2 class="text-center mb-4">Book Appointment for @Model.Doctor?.DocName</h2>
 
     <form asp-area="Admin" asp-controller="Doctor" asp-action="CompleteAppointment" method="post">
         <div class="mb-3">
@@ -14,8 +14,8 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="Time" class="form-label">Time</label>
-            <input asp-for="Time" name="Time" type="time" class="form-control" id="timeInput" required />
+            <label class="form-label">Time</label>
+            <input name="Time" type="time" class="form-control" id="timeInput" required />
         </div>
         <div class="mb-3">
             <label   class="form-label">Date</label>
@@ -24,9 +24,9 @@
 
       
 
-        <input type="hidden" asp-for="Id" value="@ViewBag.Id" />
+        <input type="hidden" asp-for="DoctorId" value="@ViewBag.DoctorId" />
 
-        <input type="hidden" asp-for="DoctorId" value="@ViewBag.DoctorId" name="DoctorId" />
+
 
         <button type="submit" class="btn btn-primary w-100" asp-route="@ViewBag.Doctor" asp-route="@ViewBag.Id" asp-route="@ViewBag.DoctorId">Confirm Appointment</button>
     </form>

@@ -1,4 +1,5 @@
-﻿using DoctorManagementSystemMVC.Models;
+﻿using DoctorManagementSystemMVC.Data.EntityConfiguration;
+using DoctorManagementSystemMVC.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorManagementSystemMVC.Data
@@ -8,6 +9,11 @@ namespace DoctorManagementSystemMVC.Data
         public DbSet<Appointment> appointments { get; set; }
         public DbSet<Specialization> specializations { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<PatientDoctor> PatientDoctors { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
+
         public object Appointment { get; internal set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -16,6 +22,12 @@ namespace DoctorManagementSystemMVC.Data
 
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=DoctorMangementSystemMVC;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new PatientDoctorEntityTypeConfiguration());
+
+        }
     }
 }

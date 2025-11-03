@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DoctorManagementSystemMVC.Models.Doctor>
+﻿@* @using DoctorManagementSystemMVC.Models.ViewModels
+@model DocVM
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -9,11 +10,14 @@
 <div class="container mt-4">
     <h1 class="mb-4 text-center">Doctors & Their Appointments</h1>
 
-    @foreach (var doctor in Model)
+    @foreach (var doctor in Model.Doctors)
     {
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">@doctor.Name (@doctor.Specialization)</h4>
+                <h4 class="mb-0">
+                    @doctor.DocName
+                    <small class="text-light">(@doctor.Specialization?.Name)</small>
+                </h4>
             </div>
 
             <div class="card-body bg-light">
@@ -32,7 +36,7 @@
                             @foreach (var appointment in doctor.Appointments)
                             {
                                 <tr>
-                                    <td>@appointment.Name</td>
+                                    <td>@appointment.Patient?.Name</td>
                                     <td>@appointment.Date.ToShortDateString()</td>
                                     <td>@appointment.Time</td>
                                     <td>
@@ -68,39 +72,52 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous">
-    
-        
-        
-        </script>
+        crossorigin="anonymous"></script>
+ *@
 
- 
-@* <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const deleteButtons = document.querySelectorAll(".btn-delete");
 
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const url = this.getAttribute("href")
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-      }
-    });
-    });
-            });
-        });
-    </script> *@
+@model IEnumerable<DoctorManagementSystemMVC.Models.Doctor>
+
+<h1>Doctors & Their Appointments</h1>
+<div class="card mb-3">
+
+    @foreach (var doctor in Model)
+    {
+
+
+        <div class="card-header">
+            <h4>@doctor.DocName (@doctor.Specialization)</h4>
+        </div>
+
+        <div class="card-body">
+            @if (doctor.Appointments.Any())
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var appointment in doctor.Appointments)
+                        {
+                            <tr>
+                                <td>@appointment.Name</td>
+                                <td>@appointment.Date.ToShortDateString()</td>
+                                <td>@appointment.Time</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No appointments booked yet.</p>
+            }
+        </div>
+
+    }
+</div>

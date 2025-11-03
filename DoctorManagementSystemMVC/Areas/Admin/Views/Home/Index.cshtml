@@ -63,38 +63,41 @@
                     <li><a href="admin/Home/index" class="active">Home</a></li>
                     <li><a href="admin/Doctor/departments">Departments</a></li>
                     <li><a href="admin/Doctor/admins">admins</a></li>
+                    <li><a href="admin/Patient/PatientPage">Patient Details</a></li>
+                    <li><a href="admin/Patient/AddPatient">Add Patient</a></li>
                     <li class="dropdown">
                         <a href="admin/home/#"><span>Appointment Management</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
-                            <li><a href="/admin/Doctor/ReservationsManagement">Reservations Management</a></li>
+                           
                             <li><a href="/admin/Doctor/DoctorsPage">Book Appointment</a></li>
-                            <li><a href="/admin/Appointments/AppointmentList">Appointment List</a></li>
-                            <li><a asp-for="/admin/Doctor/CompleteAppointment">Complete Appointment</a></li>
-                            <li><a href="/admin/home/privacy">Privacy</a></li>
-                            <li><a href="/admin/home/404">404</a></li>
+                            <li><a href="/admin/Doctor/AppointmentList">Appointment List</a></li>
+                            
                         </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#"><span>Booked Appointments</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            @foreach (var doctor in Model)
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            Booked Appointments
+                        </a>
+                        <ul class="dropdown-menu">
+
+                            @foreach (var item in Model)
                             {
-                                @if (doctor.Appointments != null && doctor.Appointments.Any())
-                                {
+                               
                                     <li class="dropdown">
-                                        <a href="#">Dr. @doctor.Name (@doctor.Specialization) <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                    <a href="#">@item.DocName (@item.Specialization?.Name) <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                                         <ul>
-                                            @foreach (var app in doctor.Appointments)
+                                        @foreach (var app in item.Appointments)
                                             {
                                                 <li>
-                                                    <a href="#">
-                                                        @app.Name - @app.Date.ToShortDateString() @app.Time.ToString(@"hh\:mm")
+                                                    <a href="/admin/Doctor/DoctorsPage">
+                                                        @app.Name - @app.Date.ToShortDateString() @app.Time
                                                     </a>
+                                                <a href="/admin/Doctor/DoctorsPage">
+                                                    @app.Doctor?.Appointments - @app.Date.ToShortDateString() @app.Time
                                                 </li>
                                             }
                                         </ul>
                                     </li>
-                                }
+                                
                             }
                         </ul>
                     </li>
@@ -114,7 +117,10 @@
 
     <!-- Find A admin Section -->
     <!-- Section Title -->
-    
+    <br>
+    <br>
+    <br>
+    <br>
                 <h2>Find A Doctor</h2>
     <div class="text-center">
         <h1 class="display-4">Welcome to Our Hospital</h1>
@@ -142,20 +148,17 @@
                 <div class="specialist-card featured" data-aos="slide-up" data-aos-delay="100">
 
                     <div class="container">
-
                         <div class="row">
-
                             @foreach (var item in Model)
                             {
                                 <div class="col-4">
-
                                     <div class="card" style="width: 18rem;">
-                                        <img src="~/Images/@item.Img" class="card-img-top" alt="..." height="140PX">
+                                        <img src="~/Images/@item.Img" class="card-img-top" alt="..." height="270PX">
                                         <div class="card-body">
-                                            <h5 class="card-title">@item.Name</h5>
-                                            <p class="card-text">@item.Specialization</p>
+                                            <h5 class="card-title">@item.DocName</h5>
+                                            <p class="card-text">@item.Specialization?.Name</p>
                                             <a asp-area="Admin"
-                                               asp-controller="Appointments"
+                                               asp-controller="Doctor"
                                                asp-action="CompleteAppointment"
                                                asp-route-DoctorId="@item.Id"
                                                class="btn btn-primary">
@@ -165,10 +168,7 @@
                                     </div>
                                 </div>
                             }
-
-
                         </div>
-
                     </div>
 
     <!-- /Call To Action Section -->

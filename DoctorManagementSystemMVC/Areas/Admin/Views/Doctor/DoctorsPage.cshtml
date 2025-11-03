@@ -1,31 +1,103 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using DoctorManagementSystemMVC.Models
-@model List<Doctor>
+﻿@using DoctorManagementSystemMVC.Models.ViewModels
+@model DocVM
+
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<div class="container">
-    <div class="row">
-        @foreach (var item in Model)
+
+<form action="/admin/Doctor/DoctorsPage" method="get" >
+
+    <div class="container"  >
+
+        <div class="row">
+            <div class="col-5">
+                <select name="SpcId" class="form-select">
+
+                    <option value="0">   All Specializations  </option>
+
+
+                    @foreach (var item in Model.Specializations)
+                    {
+                        <option selected="@(Model.SpcId==item.Id?"selected":null)" value="@item.Id">
+
+                            @item.Name
+
+                        </option>
+                    }
+
+                </select>
+
+            </div>
+
+
+            <div class="col-5">
+                <input name="DocName" value="@Model.DocName" class="form-control" placeholder="Doctor Name">
+            </div>
+            <div class="col-2">
+                <input type="submit" value="Filter" class="btn btn-primary">
+            </div>
+        </div>
+        </div>
+</form>
+
+    <br>
+    <br>
+    <br>
+    <div class="row" >
+        @foreach (var item in Model.Doctors)
         {
             <div class="col-4">
                 <div class="card" style="width: 18rem;">
                     <img src="~/Images/@item.Img" class="card-img-top" alt="..." height="270PX">
                     <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
+                        <h5 class="card-title">@item.DocName</h5>
                         <p class="card-text">@item.Specialization?.Name</p>
-                        <a asp-area="Admin"
-                           asp-controller="Doctor"
-                           asp-action="CompleteAppointment"
-                           asp-route-DoctorId="@item.Id"
-                           class="btn btn-primary">
-                            Book Appointment
-                        </a>
+                       <a asp-area="Admin"
+   asp-controller="Doctor"
+   asp-action="CompleteAppointment"
+   asp-route-DoctorId="@item.Id"
+   class="btn btn-primary">
+    Book Appointment
+</a>
+
                     </div>
                 </div>
             </div>
         }
     </div>
+<br>
+<br>
+<br>
+<div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+               
+            </li>
+            @for (int i = 1; i <= Model.Count; i++)
+            {
+                <li class="page-item">
+                    <a class="page-link @(Model.CurrentPage == i ? "active" : "")"
+                       href="/Admin/Doctor/DoctorsPage?Page=@i&DocName=@Model.DocName&SpcId=@Model.SpcId">
+                        @i
+                    </a>
+                </li>
+
+            }
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

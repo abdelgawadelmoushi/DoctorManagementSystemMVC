@@ -4,6 +4,7 @@ using DoctorManagementSystemMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoctorManagementSystemMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251102074325_Updating")]
+    partial class Updating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace DoctorManagementSystemMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PatientId")
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan>("Time")
@@ -89,9 +92,6 @@ namespace DoctorManagementSystemMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Appointment")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,27 +113,19 @@ namespace DoctorManagementSystemMVC.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppointmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Diagonse")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<string>("Medicine")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Prescription")
+                    b.Property<string>("prescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PatientId", "DoctorId");
-
-                    b.HasIndex("AppointmentId");
 
                     b.HasIndex("DoctorId");
 
@@ -170,8 +162,10 @@ namespace DoctorManagementSystemMVC.Migrations
                         .IsRequired();
 
                     b.HasOne("DoctorManagementSystemMVC.Models.Patient", "Patient")
-                        .WithMany("Appointments")
-                        .HasForeignKey("PatientId");
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Doctor");
 
@@ -191,10 +185,6 @@ namespace DoctorManagementSystemMVC.Migrations
 
             modelBuilder.Entity("DoctorManagementSystemMVC.Models.PatientDoctor", b =>
                 {
-                    b.HasOne("DoctorManagementSystemMVC.Models.Appointment", "Appointment")
-                        .WithMany()
-                        .HasForeignKey("AppointmentId");
-
                     b.HasOne("DoctorManagementSystemMVC.Models.Doctor", "Doctor")
                         .WithMany("PatientDoctors")
                         .HasForeignKey("DoctorId")
@@ -206,8 +196,6 @@ namespace DoctorManagementSystemMVC.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Appointment");
 
                     b.Navigation("Doctor");
 
@@ -223,8 +211,6 @@ namespace DoctorManagementSystemMVC.Migrations
 
             modelBuilder.Entity("DoctorManagementSystemMVC.Models.Patient", b =>
                 {
-                    b.Navigation("Appointments");
-
                     b.Navigation("PatientDoctors");
                 });
 

@@ -1,5 +1,7 @@
-﻿using DoctorManagementSystemMVC.Data;
+﻿
+using DoctorManagementSystemMVC.Data;
 using DoctorManagementSystemMVC.Models;
+using DoctorManagementSystemMVC.Models.ViewModels;
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
     [Area("Admin")]
     public class DoctorController : Controller
     {
-         ApplicationDbContext _context = new();
+        ApplicationDbContext _context = new();
 
 
 
@@ -27,14 +29,45 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         //    return View(reservations);
         //}
 
-        public IActionResult DoctorsPage()
+        [HttpGet]
+        public IActionResult DoctorsPage(int? spcId ,string DocName , int Page=1)
         {
-             var doctors = _context.Doctors.Include(s => s.Specialization).ToList().ToList();
-            return View(doctors);
+            var doctors = _context.Doctors
+                .Include(d => d.Specialization).AsQueryable()  ;
+            var itemPerPage = 9;
+
+            if (spcId != null && spcId !=0)
+            {
+                doctors = doctors.Where(e => e.SpecializationId == spcId);
+            }
+
+            if (DocName != null)
+            {
+                doctors = doctors.Where(e =>e.DocName.Contains(DocName));
+
+            }
+            var Count  = (int)Math.Ceiling((double)doctors.Count() / itemPerPage);
+            doctors = doctors.Skip((Page - 1) * itemPerPage) .Take(itemPerPage);
+
+            DocVM m = new DocVM
+            {
+                Doctors = doctors.ToList(),
+                Patients = _context.Patients.ToList(),
+                Appointments = _context.Appointments.ToList(),
+                Specializations = _context.Specializations.ToList(),
+                SpcId = spcId ?? 0,
+                DocName = DocName,
+                Count= Count - 1,
+                CurrentPage=Page,
+            };
+
+            return View(m);
         }
 
+
+
         [HttpGet]
-        public IActionResult Edit([FromRoute]int id, int doctorId)
+        public IActionResult Edit([FromRoute] int id, int doctorId)
         {
             //var appointment = _context.appointments.Find(id);
 
@@ -45,7 +78,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
 
             //ViewBag.DoctorId = doctorId;
             //ViewBag.Id = appointment.Id;
-            var appointment = _context.appointments.FirstOrDefault(e=>e.Id==id && e.DoctorId==doctorId);
+            var appointment = _context.appointments.FirstOrDefault(e => e.Id == id && e.DoctorId == doctorId);
 
             return View(appointment);
         }
@@ -57,7 +90,7 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         {
             _context.appointments.Update(appointment);
             _context.SaveChanges();
-            return RedirectToAction("AppointmentList");
+            return RedirectToAction("AppointmentList", "Doctor");
         }
 
 
@@ -70,25 +103,42 @@ namespace DoctorManagementSystemMVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult CompleteAppointment(int DoctorId)
         {
+            // تحقق من وجود الطبيب
+            var doctor = _context.Doctors.Find(DoctorId);
+            if (doctor == null)
+                return NotFound("Doctor not found.");
+
+            // إنشاء مريض جديد تلقائيًا
+            var patient = new Patient
+            {
+                Name = "Temporary Patient " + DateTime.Now.Ticks
+            };
+            _context.Patients.Add(patient);
+            _context.SaveChanges();
+
+            // إنشاء موعد جديد وربطه بالدكتور والمريض
             var appointment = new Appointment
             {
-                DoctorId = DoctorId
+                DoctorId = doctor.Id,
             };
-            ViewBag.DoctorId = DoctorId;
+
+            ViewBag.DoctorId = doctor.Id;
+            ViewBag.PatientId = patient.Id;
 
             return View(appointment);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CompleteAppointment(Appointment appointment)
         {
             if (!ModelState.IsValid)
                 return View(appointment);
 
-            _context.appointments.Add(appointment);
+            _context.Appointments.Add(appointment);
             _context.SaveChanges();
 
-            return RedirectToAction("AppointmentList", "Appointments", new { area = "Admin" });
+            return RedirectToAction("AppointmentList", "Doctor");
         }
 
         [HttpGet]

@@ -4,6 +4,7 @@ using DoctorManagementSystemMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoctorManagementSystemMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031183005_PatientUpdate2")]
+    partial class PatientUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,11 +66,11 @@ namespace DoctorManagementSystemMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DocName")
+                    b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Img")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -88,9 +91,6 @@ namespace DoctorManagementSystemMVC.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Appointment")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Img")
                         .IsRequired()
@@ -113,27 +113,19 @@ namespace DoctorManagementSystemMVC.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppointmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Diagonse")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<string>("Medicine")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Prescription")
+                    b.Property<string>("prescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PatientId", "DoctorId");
-
-                    b.HasIndex("AppointmentId");
 
                     b.HasIndex("DoctorId");
 
@@ -163,19 +155,17 @@ namespace DoctorManagementSystemMVC.Migrations
 
             modelBuilder.Entity("DoctorManagementSystemMVC.Models.Appointment", b =>
                 {
-                    b.HasOne("DoctorManagementSystemMVC.Models.Doctor", "Doctor")
+                    b.HasOne("DoctorManagementSystemMVC.Models.Doctor", "doctor")
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DoctorManagementSystemMVC.Models.Patient", "Patient")
+                    b.HasOne("DoctorManagementSystemMVC.Models.Patient", null)
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId");
 
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
+                    b.Navigation("doctor");
                 });
 
             modelBuilder.Entity("DoctorManagementSystemMVC.Models.Doctor", b =>
@@ -191,10 +181,6 @@ namespace DoctorManagementSystemMVC.Migrations
 
             modelBuilder.Entity("DoctorManagementSystemMVC.Models.PatientDoctor", b =>
                 {
-                    b.HasOne("DoctorManagementSystemMVC.Models.Appointment", "Appointment")
-                        .WithMany()
-                        .HasForeignKey("AppointmentId");
-
                     b.HasOne("DoctorManagementSystemMVC.Models.Doctor", "Doctor")
                         .WithMany("PatientDoctors")
                         .HasForeignKey("DoctorId")
@@ -206,8 +192,6 @@ namespace DoctorManagementSystemMVC.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Appointment");
 
                     b.Navigation("Doctor");
 
